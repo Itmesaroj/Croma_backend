@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const CartModel = require("../../Model/cartmodel");
-const WishlistModel = require("../../Model/wishlistmodel");
+const WishListModel = require("../../Model/wishListmodel");
 const middleToken = require("../../Middleware/verify");
 const OrderModel = require("../../Model/address"); 
 
@@ -44,7 +44,7 @@ router.post("/wishlist",middleToken, async (req, res) => {
       brand: productData.brand,
     });
     await wishdata.save();
-    const data = await WishlistModel.find({ email: productData.email });
+    const data = await WishListModel.find({ email: productData.email });
     res.status(201).json({ msg: "Product successfully added", totalProduct: data.length });
   } catch (err) {
     res.status(500).json({ msg: "Server error", error: err.message });
@@ -68,7 +68,7 @@ router.get("/carts",middleToken, async (req, res) => {
 router.get("/wishlist",middleToken, async (req, res) => {
   const email = req.body.email;
   try {
-    const data = await WishlistModel.find({ email: email });
+    const data = await WishListModel.find({ email: email });
     if (data && data.length > 0) {
       res.status(200).json({ msg: "Request successful", data: data });
     } else {
@@ -82,7 +82,7 @@ router.get("/wishlist",middleToken, async (req, res) => {
 router.delete("/wishlist",middleToken, async (req, res) => {
   const productId = req.body.id;
   try {
-    const deletedProduct = await WishlistModel.findByIdAndDelete({ _id: productId });
+    const deletedProduct = await WishListModel.findByIdAndDelete({ _id: productId });
     if (deletedProduct) {
       res.status(200).json({ msg: "Product successfully deleted" });
     } else {
