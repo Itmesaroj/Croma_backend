@@ -5,10 +5,10 @@ const WishListModel=require("../../Model/wishListmodel");
 const middleToken = require("../../Middleware/verify");
 const OrderModel = require("../../Model/address");
 
-// Use middleware for token verification
+
 router.use(middleToken);
 
-// Add product to cart
+
 router.post("/carts", async (req, res) => {
   const productData = req.body;
   try {
@@ -31,7 +31,7 @@ router.post("/carts", async (req, res) => {
   }
 });
 
-// Add product to wishlist
+
 router.post("/wishlist", async (req, res) => {
   const { email, image, title, aprice, pprice, savemoney, features, rating, brand } = req.body;
   try {
@@ -56,9 +56,9 @@ router.post("/wishlist", async (req, res) => {
   }
 });
 
-// Get cart items
+
 router.get("/carts", async (req, res) => {
-  const email = req.query.email; // Use query parameters
+  const email = req.body.email; 
   try {
     const data = await CartModel.find({ email: email });
     if (data && data.length > 0) {
@@ -71,9 +71,10 @@ router.get("/carts", async (req, res) => {
   }
 });
 
-// Get wishlist items
+
 router.get("/wishlist", async (req, res) => {
-  const email = req.query.email; // Use query parameters
+  const email = req.body.email; 
+  console.log(email)
   try {
     const data = await WishListModel.find({ email: email });
     if (data && data.length > 0) {
@@ -90,7 +91,7 @@ router.get("/wishlist", async (req, res) => {
 router.delete("/wishlist", async (req, res) => {
   const productId = req.body.id;
   try {
-    const deletedProduct = await WishListModel.findByIdAndDelete(productId); // Use productId directly
+    const deletedProduct = await WishListModel.findByIdAndDelete(productId);
     if (deletedProduct) {
       res.status(200).json({ msg: "Product successfully deleted" });
     } else {
